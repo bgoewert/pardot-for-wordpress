@@ -71,6 +71,7 @@ class Pardot_Settings
 		'campaign' => '',
 		'version' => '',
 		'https' => '',
+		'sandbox' => '',
 		'submit' => '',
 	];
 
@@ -487,6 +488,7 @@ HTML;
 			'campaign' => [__('Campaign (for Tracking Code)', 'pardot'), ''],
 			'version' => [__('API Version', 'pardot'), ['class' => 'hidden']],
 			'https' => [__('Always Use HTTPS', 'pardot'), ''],
+			'sandbox' => [__('Sandbox', 'pardot'), ''],
 			'submit' => '',
 		];
 
@@ -1069,6 +1071,18 @@ HTML;
 		$html = <<<HTML
 <input type="checkbox" id="https" name="{$html_name}" {$https} />
 HTML;
+		echo $html;
+	}
+
+	/**
+	 */
+	function sandbox_field()
+	{
+		$checked = checked(self::get_setting('sandbox'), 'on', false);
+		$html_name = $this->_get_html_name('sandbox');
+		$html = <<<HTML
+			<input type="checkbox" id="sandbox" name="{$html_name}" {$checked} />
+		HTML;
 		echo $html;
 	}
 
