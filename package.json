@@ -1,8 +1,8 @@
 {
 	"name": "pardot",
 	"version": "1.6.0",
-	"description": "Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.",
-	"author": "Cliff Seal of Pardot and Mike Schinkel of NewClarity LLC",
+	"description": "Connect your WordPress site to Pardot with shortcodes, widgets, or blocks, for campaign tracking, quick form access, and dynamic content.",
+	"author": "Salesforce",
 	"license": "GPL-2.0-or-later",
 	"homepage": "https://wordpress.org/plugins/pardot/",
 	"repository": "git+https://github.com/pardot/pardot-for-wordpress.git",
@@ -19,12 +19,12 @@
 		"packages-update": "wp-scripts packages-update"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^12.1.1"
+		"@wordpress/scripts": "^24.6.0"
 	},
 	"dependencies": {
-		"@wordpress/blocks": "^6.20.3",
-		"@wordpress/element": "^2.16.0",
-		"@wordpress/server-side-render": "^1.16.4",
-		"npm": "^6.14.7"
+		"@wordpress/blocks": "^11.21.0",
+		"@wordpress/element": "^4.20.0",
+		"@wordpress/server-side-render": "^3.20.0"
 	}
 }
+
