@@ -2,15 +2,13 @@
 /*
  * Plugin Name: Pardot
  * Description: Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.
- * Author: Pardot
- * Author URI: http://www.pardot.com
- * Plugin URI: http://wordpress.org/extend/plugins/pardot/
- * Developer: Cliff Seal of Pardot and Mike Schinkel of NewClarity LLC
- * Developer URI: http://pardot.com
+ * Author: Salesforce
+ * Author URI: https://www.salesforce.com/products/marketing-cloud/marketing-automation/
+ * Plugin URI: https://wordpress.org/plugins/pardot/
  * Version: 1.6.0
  * License: GPLv2
  *
- * Copyright 2012 Pardot LLC
+ * Copyright 2022 Salesforce, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as

@@ -15,14 +15,18 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 ### Authenticating with Salesforce SSO
 In order to use Salesforce SSO authentication, you **must** create a connected appliation for the plugin in your Salesforce org.  
 
-1. Navigate to App Manager [here](https://login.salesforce.com/lightning/setup/NavigationMenus/home).  
-2. One the top right, click the "New Connected App" button.  
-3. The connected app name, API name, and contact email can be anything you want. Click the "Enable OAuth Settings" toggle.  The Callback URL is the link to your Pardot WordPress settings page (.../wp-admin/options-general.php?page=pardot).  Also, be sure to add "Access Pardot Services (pardot_api)" to your selected OAuth scopes. 
-4. Save your connected application.
-5. A new page will appear with the "Consumer Key" and "Consumer Secret."  Copy those values and paste them into Pardot WordPress settings.
-6. Navigate to Pardot Account Setup using the link [here](https://login.salesforce.com/lightning/setup/PardotAccountSetup/home).  There, you can see the Business Unit IDs associated your organization.  Select which one you would like to use, and copy the ID into the Pardot WordPress settings.
-7. You should be be able to "Save Settings" in Pardot WordPress settings, then "Authenticate with Salesforce".  A popup will appear where you type in your Salesforce credentials.
-8. If all things went according to plan, you should see "Authentication Status" change from "Not Authenticated" to "Authenticated".
+1. Navigate to [App Manager](https://login.salesforce.com/lightning/setup/NavigationMenus/home).  
+1. On the top right, click the "New Connected App" button.
+1. Enter an app name, API name, and contact email of your choice.
+1. Click the "Enable OAuth Settings" toggle.
+1. Enter a Callback URL to allow Salesforce to redirect users back to your Pardot plugin settings page. The URL should look similar to: `https://[YourWordpressDomainHere]/wp-admin/options-general.php?page=pardot`.
+1. Add "Access Pardot Services (pardot_api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)" to your selected OAuth scopes.
+1. Save your connected application. A new page will appear with the Consumer Key and Consumer Secret.
+1. Enter your Consumer Key, Consumer Secret, and Pardot Business Unit ID into the Pardot WordPress settings screen. To find the Pardot Business Unit ID, go to Salesforce Setup and enter "Pardot Account Setup" in the Quick Find box. Your Pardot Business Unit ID begins with "0Uv" and is 18 characters long. If you cannot access the Pardot Account Setup information, ask your Salesforce Administrator to provide you with the Pardot Business Unit ID.
+1. Click "Save Settings".
+1. When the page reloads, click "Authenticate with Salesforce". Enter your Salesforce credentials in the popup that appears. 
+
+You should then see Authentication Status change from "Not Authenticated" to "Authenticated".
 
 ## Contributor Information
 If you wish to contribute to this plugin, here are a few tips to keep in mind.
@@ -192,6 +196,37 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 ### 1.6.0
 
 * Feature - Added support for the WordPress Block Editor
+
+### 1.5.8
+
+* Maintenance - Updated "Tested up to" header field to 6.1.1. While this plugin does not have a custom block, [the shortcodes](https://wordpress.org/plugins/pardot/#how%20can%20i%20use%20the%20shortcodes%20without%20the%20visual%20editor%3F) still work as expected.
+* Maintenance - Updated plugin URI.
+* Maintenance - Removed old developer link.
+* Maintenance - Added plugin contributors (if a valid WP.org profile was found).
+
+### 1.5.7
+* Fix - Allow custom HTTPS tracker domains
+* Fix - Campaign dropdown now appears immediately after authentication
+* Improvement - Automatically update form & dynamic cached HTML after selection
+* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021) 
+
+### 1.5.6
+* Fix - Persist access token refreshes properly
+
+### 1.5.5
+* Fix - Allow retrieving more than 200 assets when authing via Salesforce SSO 
+
+### 1.5.4
+* Fix - Enforce Https for Salesforce SSO Redirect URI
+
+### 1.5.3
+* Fix - New response of invalid grant no longer cause oauth to become invalidated
+
+### 1.5.2
+* Fix - v3 Pardot API call goes to appropriate endpoint
+
+### 1.5.1
+* Fix - Handled an issue that cause de-authentication
 
 ### 1.5.0
 * Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued in February 2021
