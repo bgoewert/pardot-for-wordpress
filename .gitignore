@@ -1,4 +1,4 @@
-.DS_Store
+.DS_Store/
 .svn/
 *.db
 *.zip
@@ -7,17 +7,17 @@
 .idea/
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 # Coverage directory used by tools like istanbul
-coverage
+coverage/
 
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
+# Don't include build files
+build/
 
 # Dependency directories
 node_modules/
