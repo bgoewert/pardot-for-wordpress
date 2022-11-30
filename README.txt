@@ -1,10 +1,9 @@
 === Pardot ===
-Contributors: cliffseal, barryhughes, bgoewert
-Donate link: https://salesforce.com
+Contributors: cliffseal, ModernTribe, barryhughes, bgoewert
 Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
 Tested up to: 6.1.1
-Stable tag: 1.5.8
+Stable tag: 1.6.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -154,10 +153,17 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. Choose from any form or Dynamic Content
 1. Use forms in a widget
 1. Use dynamic content in a widget
-1. A form widget on a page
+1. A form block in action
 1. A page can have two forms! Here, one is in the body and one in a widget.
+1. Pardot blocks are added the embedded category in the Block Editor.
+1. Form block in the editor
+1. Dynamic content block being edited
 
 == Changelog ==
+
+= 1.6.0 =
+
+* Feature - Added support for the WordPress Block Editor
 
 = 1.5.8 =
 
@@ -387,6 +393,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.6.0 =
+
+* Support for the WordPress Block Editor has been added!
 
 = 1.5.8 =
 
