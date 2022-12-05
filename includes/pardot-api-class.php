@@ -26,12 +26,20 @@ class Pardot_API
 	 */
 	const API_ROOT_URL = Pardot_Settings::PI_PARDOT_URL . '/api';
 
+	const API_SANDBOX_URL = 'https://pi.demo.pardot.com';
+
 	/**
 	 * @const string The URL used to refresh the Salesforce OAUTH token
 	 *
 	 * @since 1.5.0
 	 */
-	const OAUTH_URL = 'https://login.salesforce.com/services/oauth2/token';
+	const OAUTH_TOKEN_URL = 'https://login.salesforce.com/services/oauth2/token';
+
+	const OAUTH_TOKEN_SANDBOX_URL = 'https://test.salesforce.com/services/oauth2/token';
+
+	const OAUTH_AUTHORIZE_URL = 'https://login.salesforce.com/services/oauth2/authorize';
+
+	const OAUTH_AUTHORIZE_SANDBOX_URL = 'https://test.salesforce.com/services/oauth2/authorize';
 
 	/**
 	 * @const string The supported version of the Pardot API, this value is embedded into the API's URLs
@@ -493,54 +501,60 @@ class Pardot_API
 			], $body)
 		);
 
-		$response = false;
-		if (wp_remote_retrieve_response_code($http_response) == 200) {
-			// Add a check for disabled accounts: https://wordpress.org/support/topic/if-the-account-gets-disabled-this-plugin-throws-a-fatal-error/
-			if (is_string(wp_remote_retrieve_body($http_response)) && strpos(wp_remote_retrieve_body($http_response), 'Your account has been disabled') !== false) {
-				$this->error = true;
-			}
-			$response = new SimpleXMLElement(wp_remote_retrieve_body($http_response));
-			if (!empty($response->err)) {
-				if ('Your account is unable to use version 4 of the API.' == $response->err) {
-					Pardot_Settings::set_setting('version', '3');
-				} elseif ('Your account must use version 4 of the API.' == $response->err) {
-					Pardot_Settings::set_setting('version', '4');
-				}
-				$this->error = $response->err;
-				if ('login' == $item_type) {
-					$this->api_key = false;
-				} else {
-					$auth = $this->get_auth();
+		//print_r( false === strpos( $http_response['headers']['content-type'], 'text/html' ), true )
+		error_log( print_r( $http_response, true ) );
 
-					if ($this->authenticate($auth) && $response->err != 'Daily API rate limit met.' && $response->err != 'This API user lacks sufficient permissions for the requested operation') {
-						/**
-						 * Try again after a successful authentication
-						 */
-						$response = $this->get_response($item_type, $args, $property, true);
-						if ($response)
-							$this->error = false;
+		$response = false;
+
+		// if ( $http_response && false === strpos( $http_response['headers']['content-type'], 'text/html' ) ) {
+			if ( wp_remote_retrieve_response_code($http_response) == 200 && $http_response ) {
+				// Add a check for disabled accounts: https://wordpress.org/support/topic/if-the-account-gets-disabled-this-plugin-throws-a-fatal-error/
+				if (is_string(wp_remote_retrieve_body($http_response)) && strpos(wp_remote_retrieve_body($http_response), 'Your account has been disabled') !== false) {
+					$this->error = true;
+				}
+				$response = new SimpleXMLElement(wp_remote_retrieve_body($http_response));
+				if (!empty($response->err)) {
+					if ('Your account is unable to use version 4 of the API.' == $response->err) {
+						Pardot_Settings::set_setting('version', '3');
+					} elseif ('Your account must use version 4 of the API.' == $response->err) {
+						Pardot_Settings::set_setting('version', '4');
+					}
+					$this->error = $response->err;
+					if ('login' == $item_type) {
+						$this->api_key = false;
+					} else {
+						$auth = $this->get_auth();
+	
+						if ($this->authenticate($auth) && $response->err != 'Daily API rate limit met.' && $response->err != 'This API user lacks sufficient permissions for the requested operation') {
+							/**
+							 * Try again after a successful authentication
+							 */
+							$response = $this->get_response($item_type, $args, $property, true);
+							if ($response)
+								$this->error = false;
+						}
 					}
 				}
+	
+				if ($this->error)
+					$response = false;
+	
+				if ($response && empty($response->$property)) {
+					$response = false;
+					$this->error = "HTTP Response did not contain property: {$property}.";
+				}
+	
+			} elseif (wp_remote_retrieve_response_code($http_response) >= 400 && wp_remote_retrieve_response_code($http_response) <= 499) {
+				$response = new SimpleXMLElement(wp_remote_retrieve_body($http_response));
+				if ($response->children()->err->attributes()->code == 184) {
+					$this->api_key = '';
+					$response = $this->get_response($item_type, [], $property, true);
+				} else {
+					$this->error = 'Authentication failed.  Please reset settings and try again (Error: ' . $response->err . ')';
+					$response = false;
+				}
 			}
-
-			if ($this->error)
-				$response = false;
-
-			if ($response && empty($response->$property)) {
-				$response = false;
-				$this->error = "HTTP Response did not contain property: {$property}.";
-			}
-
-		} elseif (wp_remote_retrieve_response_code($http_response) >= 400 && wp_remote_retrieve_response_code($http_response) <= 499) {
-			$response = new SimpleXMLElement(wp_remote_retrieve_body($http_response));
-			if ($response->children()->err->attributes()->code == 184) {
-				$this->api_key = '';
-				$response = $this->get_response($item_type, [], $property, true);
-			} else {
-				$this->error = 'Authentication failed.  Please reset settings and try again (Error: ' . $response->err . ')';
-				$response = false;
-			}
-		}
+		// }
 
 		return $response;
 	}
@@ -587,7 +601,7 @@ class Pardot_API
 				self::$URL_PATH_TEMPLATE
 			);
 		}
-		return self::API_ROOT_URL . $url;
+		return ( Pardot_settings::get_setting('sandbox') ? self::API_SANDBOX_URL : self::API_ROOT_URL ) . $url;
 	}
 
 	/**

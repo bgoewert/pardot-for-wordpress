@@ -113,10 +113,12 @@ CSS;
 			$regex = '#^' . str_replace('.', '\.', site_url()) . '#';
 			$url = preg_match($regex, $_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : site_url();
 
+			$inline_form_url = ( Pardot_Settings::get_setting('sandbox') ? Pardot_Settings::INLINE_FORM_SANDBOX_URL : Pardot_Settings::INLINE_FORM_URL );
+
 			/**
 			 * Convert the INLINE_FORM_URL into a regex (escape the '.'s)
 			 */
-			$post_root_url_regex = str_replace('.', '\.', Pardot_Settings::INLINE_FORM_URL);
+			$post_root_url_regex = str_replace('.', '\.', $inline_form_url);
 
 			/**
 			 * Check to make the "url" parameter matches the post's root URL

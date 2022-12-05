@@ -16,9 +16,19 @@ class Pardot_Settings
 	const BASE_PARDOT_DOMAIN = 'pardot.com';
 
 	/**
+	 * @var string Domain used for sandbox and developer orgs.
+	 */
+	const BASE_SANDBOX_DOMAIN = 'demo.pardot.com';
+
+	/**
 	 * @var string Used as base for other URL constants
 	 */
 	const PI_PARDOT_URL = 'https://pi.' . self::BASE_PARDOT_DOMAIN;
+
+	/**
+	 * @var string Used as the base for sandbox and developer org URLs.
+	 */
+	const PI_PARDOT_SANDBOX_URL = 'https://pi.' . self::BASE_SANDBOX_DOMAIN;
 
 	/**
 	 * @var string Link to App Manager on Ligntning where users can create their connected app
@@ -26,24 +36,49 @@ class Pardot_Settings
 	const APP_MANAGER_URL = 'https://login.salesforce.com/lightning/setup/NavigationMenus/home';
 
 	/**
+	 * @var string Link to App Manager on sandbox and developer orgs where users can create their connected app.
+	 */
+	const APP_MANAGER_TEST_URL = 'https://test.salesforce.com/lightning/setup/NavigationMenus/home';
+
+	/**
 	 * @var string Link to the settings page on Lightning where users can find their business unit id
 	 */
 	const BUSINESS_UNIT_ID_URL = 'https://login.salesforce.com/lightning/setup/PardotAccountSetup/home';
 
 	/**
+	 * @var string Link to the settings page on sandbox and developer orgs where users can find their business unit id.
+	 */
+	const BUSINESS_UNIT_ID_TEST_URL = 'https://test.salesforce.com/lightning/setup/PardotAccountSetup/home';
+
+	/**
 	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
 	 */
 	const FORMS_URL = self::PI_PARDOT_URL . '/form';
+	
+	/**
+	 * @var string Admin page on sandbox and development orgs that allows authenticated users to add forms to a campaign.
+	 */
+	const FORMS_SANDBOX_URL = self::PI_PARDOT_SANDBOX_URL . '/form';
 
 	/**
 	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
 	 */
 	const DYNAMIC_CONTENT_URL = self::PI_PARDOT_URL . '/content';
+	
+	/**
+	 * @var string Admin page on sandbox and developer orgs that allows authenticated users to add forms to a campaign.
+	 */
+	const DYNAMIC_CONTENT_SANDBOX_URL = self::PI_PARDOT_URL . '/content';
 
 	/**
 	 * @var string The root URL used to <iframe> a Pardot Forms. Used to add inline forms support.
 	 */
-	const INLINE_FORM_URL = 'http://go.' . self::BASE_PARDOT_DOMAIN;
+	const INLINE_FORM_URL = 'https://go.' . self::BASE_PARDOT_DOMAIN;
+
+	/**
+	 * @var string The root URL used to <iframe> a Pardot Forms. Used to add inline forms support.
+	 */
+	const INLINE_FORM_SANDBOX_URL = 'https://go.' . self::BASE_SANDBOX_DOMAIN;
 
 	/**
 	 * @var string Key for the Settings API option group AND for the settings stored in wp_options
@@ -65,13 +100,13 @@ class Pardot_Settings
 	 */
 	private static $FIELDS = [
 		'auth_status' => '',
+		'sandbox' => '',
 		'client_id' => '',
 		'client_secret' => '',
 		'business_unit_id' => '',
 		'campaign' => '',
 		'version' => '',
 		'https' => '',
-		'sandbox' => '',
 		'submit' => '',
 	];
 
@@ -258,6 +293,7 @@ class Pardot_Settings
 	function admin_head()
 	{
 		$code_challenge = self::base64url_encode(pack('H*', hash('sha256', get_option(self::$CODE_VERIFIER))));
+		$oauth_url = ( self::get_setting('sandbox') ? Pardot_API::OAUTH_AUTHORIZE_SANDBOX_URL : Pardot_API::OAUTH_AUTHORIZE_URL );
 
 		$html = <<<HTML
 <style type="text/css">
@@ -298,7 +334,7 @@ function clickSubmit() {
     let client_id = document.getElementById("client-id").value;
     let sign_in_sso = document.getElementById("sso-sign-in");
 	if (client_id) {
-		let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" +
+		let url = "{$oauth_url}?client_id=" + client_id + "&redirect_uri=" +
 			window.location.href.split('?')[0] + '?page=pardot' + "&response_type=code" + "&display=popup" + "&scope=refresh_token%20pardot_api" + 
 			"&state=" + nonce + "&code_challenge=" + '{$code_challenge}';
 		window.open(url, "Sign In with Salesforce", "height=800, width=400, left=" + sign_in_sso.getBoundingClientRect().right);
@@ -409,7 +445,7 @@ HTML;
 		}
 
 		if (isset($_GET['code']) && isset($_GET['status']) && $_GET['status'] == 'success' && !self::is_authenticated()) {
-			$url = 'https://login.salesforce.com/services/oauth2/token';
+			$auth_url = ( self::get_setting('sandbox') ? Pardot_API::OAUTH_TOKEN_SANDBOX_URL : Pardot_API::OAUTH_TOKEN_URL );
 			$body = [
 				'grant_type' => 'authorization_code',
 				'code' => $_GET['code'],
@@ -429,7 +465,7 @@ HTML;
 				'cookies' => [],
 			];
 
-			$response = wp_remote_post($url, $args);
+			$response = wp_remote_post($auth_url, $args);
 
 			$response = json_decode(wp_remote_retrieve_body($response));
 
@@ -446,7 +482,7 @@ HTML;
 				self::set_setting('refresh_token', $response->{'refresh_token'});
 			} // Error message to remind user that they should have enabled refresh_token scope for auto-reauth
 			elseif ($body['grant_type'] != 'refresh_token' && !isset($response->{'error'}) && !isset($response->{'refresh_token'})) {
-				add_settings_error(self::$OPTION_GROUP, 'update_settings', 'Make sure you enable the refresh_token scope if you want to be want to be reauthenticated automatically.', 'error');
+				add_settings_error(self::$OPTION_GROUP, 'update_settings', 'Make sure you enable the refresh_token scope if you want to reauthenticate automatically.', 'error');
 				settings_errors('update_settings');
 			}
 
@@ -482,13 +518,13 @@ HTML;
 		 */
 		self::$FIELDS = [
 			'auth_status' => [__('Authentication Status', 'pardot'), ''],
+			'sandbox' => [__('Sandbox', 'pardot'), ''],
 			'client_id' => [__('Consumer Key', 'pardot'), ''],
 			'client_secret' => [__('Consumer Secret', 'pardot'), ''],
 			'business_unit_id' => [__('Business Unit ID', 'pardot'), ''],
 			'campaign' => [__('Campaign (for Tracking Code)', 'pardot'), ''],
 			'version' => [__('API Version', 'pardot'), ['class' => 'hidden']],
 			'https' => [__('Always Use HTTPS', 'pardot'), ''],
-			'sandbox' => [__('Sandbox', 'pardot'), ''],
 			'submit' => '',
 		];
 
@@ -922,7 +958,8 @@ HTML;
 		$client_id = self::get_setting('client_id');
 		$html_name = $this->_get_html_name('client_id');
 		$msg = __('Consumer Key and Consumer Secret are obtained after creating a connected app in <a href="%s" target="_blank">App Manager</a>.', 'pardot');
-		$msg = sprintf($msg, self::APP_MANAGER_URL);
+		$app_manager_url = (self::get_setting('sandbox') ? self::APP_MANAGER_TEST_URL : self::APP_MANAGER_URL );
+		$msg = sprintf($msg, $app_manager_url);
 
 		$html = <<<HTML
 <div id="client-id-wrap">
@@ -971,8 +1008,9 @@ HTML;
 	{
 		$business_unit_id = self::get_setting('business_unit_id');
 		$html_name = $this->_get_html_name('business_unit_id');
+		$business_unit_url = ( self::get_setting('sandbox') ? self::BUSINESS_UNIT_ID_TEST_URL : self::BUSINESS_UNIT_ID_URL );
 		$msg = __('Find your Pardot Business Unit ID in <a href="%s" target="_blank">Pardot Account Setup</a>.', 'pardot');
-		$msg = sprintf($msg, self::BUSINESS_UNIT_ID_URL);
+		$msg = sprintf($msg, $business_unit_url);
 
 		$html = <<<HTML
 <div id="business-unit-id-wrap">

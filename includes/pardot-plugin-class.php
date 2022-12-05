@@ -181,7 +181,7 @@ class Pardot_Plugin
 			 * Grab the URL where users can define forms on Pardot's website and
 			 * put into a variable that can be embedded in a string.
 			 */
-			$forms_url = Pardot_Settings::FORMS_URL;
+			$forms_url = ( Pardot_Settings::get_setting('sandbox') ? Pardot_Settings::FORMS_SANDBOX_URL : Pardot_Settings::FORMS_URL);
 
 			/**
 			 * Grab link text so it can be translated seperately.
@@ -248,7 +248,7 @@ class Pardot_Plugin
 			 * Grab the URL where users can define dynamicContents on Pardot's website and
 			 * put into a variable that can be embedded in a string.
 			 */
-			$dynamicContents_url = Pardot_Settings::DYNAMIC_CONTENT_URL;
+			$dynamicContents_url = ( Pardot_Settings::get_setting('sandbox') ? Pardot_Settings::DYNAMIC_CONTENT_SANDBOX_URL : Pardot_Settings::DYNAMIC_CONTENT_URL);
 
 			/**
 			 * Grab link text so it can be translated seperately.
