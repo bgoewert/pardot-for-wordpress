@@ -1,15 +1,21 @@
 .DS_Store
 *.sql
 
+# Local backup files
+*.bak
+
 # Local configs
 phpcs.xml
 phpunit.xml
 Thumbs.db
 wp-cli.local.yml
 
-# Don't include archive files.
+# Don't include archive files
 *.tar.gz
 *.zip
+
+# Build directories
+build/
 
 # Editor Specific
 .vscode/
