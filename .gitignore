@@ -1,35 +1,19 @@
-.DS_Store/
-.svn/
-*.db
+.DS_Store
+*.sql
+
+# Local configs
+phpcs.xml
+phpunit.xml
+Thumbs.db
+wp-cli.local.yml
+
+# Don't include archive files.
+*.tar.gz
 *.zip
 
-# JetBrains
-.idea/
+# Editor Specific
+.vscode/
 
-# Logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Coverage directory used by tools like istanbul
-coverage/
-
-# Don't include build files
-build/
-
-# Dependency directories
+# Local package directories
 node_modules/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Output of 'npm pack'
-*.tgz
-
-# dotenv environment variables file
-.env
+vendor/
