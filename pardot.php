@@ -25,6 +25,8 @@
  *
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 define( 'PARDOT_PLUGIN_FILE', __FILE__ );
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'PARDOT_PLUGIN_VER', '1.6.0' );
