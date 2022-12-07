@@ -1,43 +1,45 @@
 === Pardot ===
-Contributors: cliffseal, ModernTribe, barryhughes, bgoewert
+Contributors: bgoewert, cliffseal, barryhughes, mikeschinkel
 Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
-Requires at least: 5.5
+Requires at least: 4.1
 Tested up to: 6.1.1
 Stable tag: 1.6.0
-Requires PHP: 7.0
+Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Integrate Pardot with WordPress: easily track visitors, embed forms and dynamic content in pages and posts, or use the forms or dynamic content widgets.
-
 == Description ==
 
-Say hello to marketing automation simplicity! With a single login, your self-hosted WordPress installation will be securely connected with Pardot. With the selection of your campaign, you'll be able to track visitors and work with forms and dynamic content without touching a single line of code. You can use the widget to place a form or dynamic content anywhere a sidebar appears, or embed them in a page or post using a shortcode or the Pardot button on the Visual Editor's toolbar.
+Say hello to marketing automation simplicity!
+
+With a single login, your WordPress site will be securely connected with Pardot. By selecting a campaign, you'll be able to track visitors across your whole site as well as work with forms and dynamic content without touching a single line of code. You can use the widget to place a form or dynamic content anywhere a sidebar appears, or embed them in a page or post using a block, or shortcode, or the Pardot button on the Classic Editor's toolbar.
 
 == Installation ==
 
-1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
+1. Create a Connected App in Salesforce for the plugin and save the consumer key and secret.
+	- You can find the consumer key and secret by going to Setup > App Manager > View your app > Under the "API" section, click on the "Manage Consumer Details" button.
+	- See [Configure Basic Connected App Settings](https://help.salesforce.com/s/articleView?id=sf.connected_app_create_basics.htm&language=en_US&type=5).
+1. Download from the plugin repository or install directly from your site by going to "Plugins" > "Add New".
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
+3. Go to Settings > Pardot and authenticate with Salesforce using the Connected App keys from step 1 and your [Business Unit ID](https://login.salesforce.com/lightning/setup/PardotAccountSetup/home).
 4. Select your campaign (for tracking code usage).
 
 == Frequently Asked Questions ==
 
 = How do I authenticate with Salesforce SSO? =
 
-In order to use Salesforce SSO authentication, you **must** create a connected application for the plugin in your Salesforce org.  
+In order to use Salesforce SSO authentication, you **must** create a connected application for the plugin in your Salesforce org.
 
-
-1. Navigate to [App Manager](https://login.salesforce.com/lightning/setup/NavigationMenus/home).  
-1. On the top right, click the "New Connected App" button.
-1. Enter an app name, API name, and contact email of your choice.
-1. Click the "Enable OAuth Settings" toggle.
-1. Enter a Callback URL to allow Salesforce to redirect users back to your Pardot plugin settings page. The URL should look similar to: `https://[YourWordpressDomainHere]/wp-admin/options-general.php?page=pardot`.
-1. Add "Access Pardot Services (pardot_api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)" to your selected OAuth scopes.
-1. Save your connected application. A new page will appear with the Consumer Key and Consumer Secret.
-1. Enter your Consumer Key, Consumer Secret, and Pardot Business Unit ID into the Pardot WordPress settings screen. To find the Pardot Business Unit ID, go to Salesforce Setup and enter "Pardot Account Setup" in the Quick Find box. Your Pardot Business Unit ID begins with "0Uv" and is 18 characters long. If you cannot access the Pardot Account Setup information, ask your Salesforce Administrator to provide you with the Pardot Business Unit ID.
-1. Click "Save Settings".
-1. When the page reloads, click "Authenticate with Salesforce". Enter your Salesforce credentials in the popup that appears. 
+1. Navigate to [App Manager](https://login.salesforce.com/lightning/setup/NavigationMenus/home).
+2. On the top right, click the "New Connected App" button.
+3. Enter an app name, API name, and contact email of your choice.
+4. Click the "Enable OAuth Settings" toggle.
+5. Enter a Callback URL to allow Salesforce to redirect users back to your Pardot plugin settings page. The URL should look similar to: `https://[YourWordpressDomainHere]/wp-admin/options-general.php?page=pardot`.
+6. Add "Access Pardot Services (pardot_api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)" to your selected OAuth scopes.
+7. Save your connected application. A new page will appear with the Consumer Key and Consumer Secret.
+8. Enter your Consumer Key, Consumer Secret, and Pardot Business Unit ID into the Pardot WordPress settings screen. To find the Pardot Business Unit ID, go to Salesforce Setup and enter "Pardot Account Setup" in the Quick Find box. Your Pardot Business Unit ID begins with "0Uv" and is 18 characters long. If you cannot access the Pardot Account Setup information, ask your Salesforce Administrator to provide you with the Pardot Business Unit ID.
+9. Click "Save Settings".
+10. When the page reloads, click "Authenticate with Salesforce". Enter your Salesforce credentials in the popup that appears.
 
 You should then see Authentication Status change from "Not Authenticated" to "Authenticated".
 
@@ -81,7 +83,7 @@ would render something like:
 
 = How do I change my campaign? =
 
-Simply choose another campaign in Settings > Pardot Settings and click 'Save Settings'.
+Simply choose another campaign in Settings > Pardot and click 'Save Settings'.
 
 = Some of my form is cut off. What should I do? =
 
@@ -149,15 +151,15 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 == Screenshots ==
 
 1. Settings area
-1. Pardot button in the Classic Editor toolbar
-1. Choose from any form or Dynamic Content
-1. Use forms in a widget
-1. Use dynamic content in a widget
-1. A form block in action
-1. A page can have two forms! Here, one is in the body and one in a widget.
-1. Pardot blocks are added the embedded category in the Block Editor.
-1. Form block in the editor
-1. Dynamic content block being edited
+2. Pardot button in the Classic Editor toolbar
+3. Choose from any form or Dynamic Content
+4. Use forms in a widget
+5. Use dynamic content in a widget
+6. A form block in action
+7. A page can have two forms! Here, one is in the body and one in a widget.
+8. Pardot blocks are added the embedded category in the Block Editor.
+9. Form block in the editor
+10. Dynamic content block being edited
 
 == Changelog ==
 
@@ -201,7 +203,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.1 =
 
-* Fix - Handle recently added error codes (4xx) to prevent de-authorization  
+* Fix - Handle recently added error codes (4xx) to prevent de-authorization
 
 = 1.5.0 =
 
