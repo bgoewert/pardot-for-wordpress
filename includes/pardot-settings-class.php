@@ -245,10 +245,10 @@ class Pardot_Settings
 	}
 
 	/**
-	 * Insert CSS for Pardot Setting page into the seeting page's HTML <head>.
+	 * Insert CSS for Pardot Setting page into the setting page's HTML <head>.
 	 *
 	 * Called with a priority of zero (0) this can be overridden with other CSS.
-	 * We chose to incldue this in the head rather than in a CSS file to mininize
+	 * We chose to include this in the head rather than in a CSS file to minimize
 	 * the performance impact of the plugin; loading extra files via HTTP is one
 	 * of the biggest performance drains there is.
 	 *

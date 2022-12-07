@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Manages the general functionality for the Pardot Plugin that doesn't fit elsewhere.
+ * Manages the general functionality for the Pardot Plugin.
  *
  * Includes:
  *  - Automatic Javascript in the theme footer
