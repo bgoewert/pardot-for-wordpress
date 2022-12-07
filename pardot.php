@@ -47,14 +47,18 @@ if ( ! defined( 'PARDOT_JS_CACHE_TIMEOUT' ) ) {
 	define( 'PARDOT_JS_CACHE_TIMEOUT', MONTH_IN_SECONDS );
 }
 
-require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-class.php' );
+// require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-class.php' );
+require_once PARDOT_PLUGIN_DIR . '/includes/class-pardot-api.php';
+require_once PARDOT_PLUGIN_DIR . '/includes/class-pardot.php';
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-functions.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-shortcode-popup-class.php' );
-require( PARDOT_PLUGIN_DIR . '/includes/pardot-plugin-class.php' );
+// require( PARDOT_PLUGIN_DIR . '/includes/pardot-plugin-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-crypto.php');
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-settings-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-widget-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-template-tags.php' );
+
+add_action( 'init', array( Pardot::get_instance(), 'init' ) );
 
 function pardot_init() {
     $dir = dirname( __FILE__ );
@@ -159,7 +163,7 @@ function pardot_form_block_callback($attributes) {
     if (isset($attributes['form_id'])) {
         $attributes['class'] = $attributes['className'];
         unset($attributes['className']);
-        return Pardot_Plugin::get_form_body($attributes);
+        return Pardot::get_form_body($attributes);
     }
     return '';
 }
@@ -168,7 +172,7 @@ function pardot_dynamic_content_block_callback($attributes) {
     if (isset($attributes['dynamicContent_id'])) {
         $attributes['class'] = $attributes['className'];
         unset($attributes['className']);
-        return Pardot_Plugin::get_dynamic_content_body($attributes);
+        return Pardot::get_dynamic_content_body($attributes);
     }
     return '';
 }

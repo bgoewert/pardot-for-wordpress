@@ -67,7 +67,7 @@ function pardot_dc_async_script() {
  * @since 1.0.0
  */
 function remove_pardot_wp_footer() {
-	remove_action( 'wp_footer', array( Pardot_Plugin::self(), 'wp_footer' ) );
+	remove_action( 'wp_footer', array( Pardot::self(), 'wp_footer' ) );
 }
 /**
  *
@@ -85,9 +85,9 @@ function get_pardot_tracking_js() {
 			$account = get_pardot_account();
 			if ( isset( $account->tracking_code_template ) ) {
 				$tracking_code_template = $account->tracking_code_template;
-				
+
 				if ( set_transient( 'pardot_tracking_code_template', $tracking_code_template, PARDOT_JS_CACHE_TIMEOUT ) ) {
-					Pardot_Plugin::save_transient_key( 'pardot_tracking_code_template' );
+					Pardot::save_transient_key( 'pardot_tracking_code_template' );
 				}
 			}
 		}

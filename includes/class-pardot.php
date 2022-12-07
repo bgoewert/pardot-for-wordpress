@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Manages the general functionality for the Pardot Plugin.
+ * Contains the main plugin class.
  *
  * Includes:
  *  - Automatic Javascript in the theme footer
@@ -14,19 +13,21 @@
  *  - Adds 'Settings' link to the plugins admin page for this plugin.
  *  - admin_init to ensure hooks are added for admin pages.
  *
+ * @package Pardot
+ */
+
+/**
+ * Main plugin class that manages the general functionality for the Pardot Plugin.
+ *
  * @todo Refresh the API cache on a cron task before the cache times out (default = 180 seconds) which will ensure
  * always fast performance on Widgets page on with Shortcode Insert Popup.
- *
- * @author Mike Schinkel <mike@newclarity.net>
- *
- * @since 1.0.0
  */
-class Pardot_Plugin
+class Pardot
 {
 	/**
-	 * @var Pardot_Plugin Capture $this so that other can remove_action() if needed.
+	 * @var Pardot Capture $this so that other can remove_action() if needed.
 	 */
-	private static $self;
+	private static $_instance;
 
 	/**
 	 * @var Pardot_API Capture an $api instance since we will often use it several times in a page load.
@@ -54,45 +55,22 @@ class Pardot_Plugin
 	public static $saved_transient_keys = '_pardot_transient_keys';
 
 	/**
-	 * Create singleton instance of the Pardot Plugin object.
-	 *
-	 * @since 1.0.0
-	 */
-	function __construct()
-	{
-
-		/**
-		 * This class is designed to be instansiated only once.
-		 * We instantiate once at end of this class definition, throw an error if someone tries a second time.
-		 */
-		if (isset(self::$self))
-			wp_die(__('Pardot_Plugin should not be created more than once.', 'pardot'));
-
-		/**
-		 * Set self::$self so that a user can remove access to one of these actions or shortcodes if they need to.
-		 */
-		self::$self = $this;
-
-		/**
-		 * Hook the 'init' action where we add other actions and the shortcode.
-		 */
-		add_action('init', [$this, 'init']);
-
-	}
-
-	/**
 	 * Return the singleton instance of this class.
 	 *
 	 * To be use in case someone needs to remove one of the actions or shortcodes.
 	 *
 	 * @static
-	 * @return Pardot_Plugin
+	 * @return Pardot
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
-	static function self()
+	public static function get_instance()
 	{
-		return self::$self;
+		if ( ! isset( self::$_instance ) ) {
+			self::$_instance = new self;
+		}
+
+		return self::$_instance;
 	}
 
 	/**
@@ -105,7 +83,7 @@ class Pardot_Plugin
 		/**
 		 * Load the pardot text domain for language translations
 		 */
-		add_action('plugins_loaded', [$this, 'plugins_loaded']);
+		add_action('plugins_loaded', [$this, 'load_textdomain']);
 
 		/**
 		 * Add the Pardot Javascript to the form.
@@ -429,11 +407,9 @@ class Pardot_Plugin
 	/**
 	 * Load the text domain for language translation after the plugin is loaded.
 	 *
-	 * As of 1.0.0 no language translations are yet included.
-	 *
 	 * @since 1.0.0
 	 */
-	function plugins_loaded()
+	function load_textdomain()
 	{
 		/**
 		 * Load the 'pardot' text domain for language translation using the /languages/ subdirectory.
@@ -839,7 +815,7 @@ class Pardot_Plugin
 					 * Finally, save what we found.
 					 */
 					if (set_transient('pardot_form_html_' . $form_id, $form_html, self::$cache_timeout)) {
-						Pardot_Plugin::save_transient_key('pardot_form_html_' . $form_id);
+						Pardot::save_transient_key('pardot_form_html_' . $form_id);
 					}
 				}
 			}
@@ -1315,9 +1291,3 @@ class Pardot_Plugin
 		}
 	}
 }
-
-/**
- * Instantiate this class to ensure the action and shortcode hooks are hooked.
- * This instantiation can only be done once (see it's __construct() to understand why.)
- */
-new Pardot_Plugin();

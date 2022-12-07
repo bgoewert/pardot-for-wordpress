@@ -240,7 +240,7 @@ CSS;
 		 */
 		$body_html = '<h4>Please select a Pardot form.</h4>';
 		if (isset($instance['form_id'])) {
-			$body_html = Pardot_Plugin::get_form_body($instance);
+			$body_html = Pardot::get_form_body($instance);
 		}
 
 		/**
@@ -297,7 +297,7 @@ HTML;
 		 */
 		if (isset($new_instance['form_id'])) {
 			$instance['form_id'] = $new_instance['form_id'];
-			Pardot_Plugin::delete_form_html_transient($new_instance['form_id']);
+			Pardot::delete_form_html_transient($new_instance['form_id']);
 		}
 
 		$instance['title'] = strip_tags($new_instance['title']);
@@ -437,24 +437,24 @@ HTML;
 		if (isset($instance['title'])) {
 			$title = $instance['title'];
 		} else {
-			$title = __('', 'text_domain');
+			$title = __('', 'pardot');
 		}
 
-		$html .= '<p><label for="' . $this->get_field_id("title") . '">' . __('Title:') . '</label><input class="widefat" id="' . $this->get_field_id("title") . '" name="' . $this->get_field_name("title") . '" type="text" value="' . esc_attr($title) . '" /></p>';
+		$html .= '<p><label for="' . $this->get_field_id("title") . '">' . __('Title:', 'pardot') . '</label><input class="widefat" id="' . $this->get_field_id("title") . '" name="' . $this->get_field_name("title") . '" type="text" value="' . esc_attr($title) . '" /></p>';
 
 		$html .= '<p><strong>Optional Parameters</strong><br/><small>' . $param_text . '</small></p>';
 
-		$height = $instance['height'] ?? __('', 'text_domain');
+		$height = $instance['height'] ?? __('', 'pardot');
 
-		$html .= '<p><label for="' . $this->get_field_id("height") . '">' . __('Height:') . '</label><input id="' . $this->get_field_id("height") . '" name="' . $this->get_field_name("height") . '" type="text" value="' . esc_attr($height) . '" size="6" />';
+		$html .= '<p><label for="' . $this->get_field_id("height") . '">' . __('Height:', 'pardot') . '</label><input id="' . $this->get_field_id("height") . '" name="' . $this->get_field_name("height") . '" type="text" value="' . esc_attr($height) . '" size="6" />';
 
-		$width = $instance['width'] ?? __('', 'text_domain');
+		$width = $instance['width'] ?? __('', 'pardot');
 
-		$html .= '<label for="' . $this->get_field_id("width") . '">' . __('Width:') . '</label><input id="' . $this->get_field_id("width") . '" name="' . $this->get_field_name("width") . '" type="text" value="' . esc_attr($width) . '" size="6" /></p>';
+		$html .= '<label for="' . $this->get_field_id("width") . '">' . __('Width:', 'pardot') . '</label><input id="' . $this->get_field_id("width") . '" name="' . $this->get_field_name("width") . '" type="text" value="' . esc_attr($width) . '" size="6" /></p>';
 
-		$class = $instance['class'] ?? __('', 'text_domain');
+		$class = $instance['class'] ?? __('', 'pardot');
 
-		$html .= '<p><label for="' . $this->get_field_id("class") . '">' . __('Class:') . '</label><input class="widefat" id="' . $this->get_field_id("class") . '" name="' . $this->get_field_name("class") . '" type="text" value="' . esc_attr($class) . '" /></p>';
+		$html .= '<p><label for="' . $this->get_field_id("class") . '">' . __('Class:', 'pardot') . '</label><input class="widefat" id="' . $this->get_field_id("class") . '" name="' . $this->get_field_name("class") . '" type="text" value="' . esc_attr($class) . '" /></p>';
 
 
 		$html .= <<<HTML
@@ -606,7 +606,7 @@ class Pardot_Dynamic_Content_Widget extends WP_Widget
 		 */
 		$body_html = '<h4>Please select Pardot dynamic content.</h4>';
 		if (isset($instance['dynamicContent_id'])) {
-			$body_html = Pardot_Plugin::get_dynamic_content_body($instance);
+			$body_html = Pardot::get_dynamic_content_body($instance);
 		}
 
 		wp_register_script('pddc', plugins_url('js/asyncdc.min.js', dirname(__FILE__)), ['jquery'], false, true);
@@ -666,7 +666,7 @@ HTML;
 		 */
 		if (isset($new_instance['dynamicContent_id'])) {
 			$instance['dynamicContent_id'] = $new_instance['dynamicContent_id'];
-			Pardot_Plugin::delete_dc_html_transient($new_instance['dynamicContent_id']);
+			Pardot::delete_dc_html_transient($new_instance['dynamicContent_id']);
 		}
 
 		$instance['title'] = strip_tags($new_instance['title']);
@@ -803,26 +803,26 @@ HTML;
 		if (isset($instance['title'])) {
 			$title = $instance['title'];
 		} else {
-			$title = __('New title', 'text_domain');
+			$title = __('New title', 'pardot');
 		}
 
-		$html .= '<p><label for="' . $this->get_field_id("title") . '">' . __('Title:') . '</label><input class="widefat" id="' . $this->get_field_id("title") . '" name="' . $this->get_field_name("title") . '" type="text" value="' . esc_attr($title) . '" /></p>';
+		$html .= '<p><label for="' . $this->get_field_id("title") . '">' . __('Title:', 'pardot') . '</label><input class="widefat" id="' . $this->get_field_id("title") . '" name="' . $this->get_field_name("title") . '" type="text" value="' . esc_attr($title) . '" /></p>';
 
 		if (isset($param_text)) {
 			$html .= '<p><strong>Optional Parameters</strong><br/><small>' . $param_text . '</small></p>';
 		}
 
-		$height = $instance['height'] ?? __('', 'text_domain');
+		$height = $instance['height'] ?? __('', 'pardot');
 
-		$html .= '<p><label for="' . $this->get_field_id("height") . '">' . __('Height:') . '</label><input id="' . $this->get_field_id("height") . '" name="' . $this->get_field_name("height") . '" type="text" value="' . esc_attr($height) . '" size="6" />';
+		$html .= '<p><label for="' . $this->get_field_id("height") . '">' . __('Height:', 'pardot') . '</label><input id="' . $this->get_field_id("height") . '" name="' . $this->get_field_name("height") . '" type="text" value="' . esc_attr($height) . '" size="6" />';
 
-		$width = $instance['width'] ?? __('', 'text_domain');
+		$width = $instance['width'] ?? __('', 'pardot');
 
-		$html .= '<label for="' . $this->get_field_id("width") . '">' . __('Width:') . '</label><input id="' . $this->get_field_id("width") . '" name="' . $this->get_field_name("width") . '" type="text" value="' . esc_attr($width) . '" size="6" /></p>';
+		$html .= '<label for="' . $this->get_field_id("width") . '">' . __('Width:', 'pardot') . '</label><input id="' . $this->get_field_id("width") . '" name="' . $this->get_field_name("width") . '" type="text" value="' . esc_attr($width) . '" size="6" /></p>';
 
-		$class = $instance['class'] ?? __('', 'text_domain');
+		$class = $instance['class'] ?? __('', 'pardot');
 
-		$html .= '<p><label for="' . $this->get_field_id("class") . '">' . __('Class:') . '</label><input class="widefat" id="' . $this->get_field_id("class") . '" name="' . $this->get_field_name("class") . '" type="text" value="' . esc_attr($class) . '" /></p>';
+		$html .= '<p><label for="' . $this->get_field_id("class") . '">' . __('Class:', 'pardot') . '</label><input class="widefat" id="' . $this->get_field_id("class") . '" name="' . $this->get_field_name("class") . '" type="text" value="' . esc_attr($class) . '" /></p>';
 
 		if (isset($cache_text)) {
 			$html .= '<p><small>' . $cache_text . '</small></p>';
