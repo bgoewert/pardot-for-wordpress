@@ -1,0 +1,16 @@
+{
+    "name": "bgoewert/pardot",
+    "description": "Connect your WordPress site to Pardot.",
+    "license": "GPL-2.0-or-later",
+    "scripts": {
+      "phpcs-setup": "./vendor/bin/phpcs --config-set installed_paths $PWD/vendor/wp-coding-standards/wpcs,$PWD/vendor/phpcompatibility/php-compatibility,$PWD/vendor/phpcompatibility/phpcompatibility-paragonie,$PWD/vendor/phpcompatibility/phpcompatibility-wp",
+      "phpcs": "./vendor/bin/phpcs",
+      "phpcbf": "./vendor/bin/phpcbf"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^2.3",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "phpcompatibility/phpcompatibility-paragonie": "^1.3"
+    }
+}
