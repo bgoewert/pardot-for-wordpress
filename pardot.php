@@ -5,8 +5,9 @@
  * Author: Salesforce
  * Author URI: https://www.salesforce.com/products/marketing-cloud/marketing-automation/
  * Plugin URI: https://wordpress.org/plugins/pardot/
- * Version: 1.6.0
+ * Version: 2.0.0-dev
  * License: GPLv2
+ * Text Domain: pardot
  *
  * Copyright 2022 Salesforce, Inc.
  *
@@ -29,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 define( 'PARDOT_PLUGIN_FILE', __FILE__ );
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'PARDOT_PLUGIN_VER', '1.6.0' );
+define( 'PARDOT_PLUGIN_VER', '2.0.0-dev' );
 
 if ( ! defined( 'PARDOT_FORM_INCLUDE_TYPE' ) ) {
 	define( 'PARDOT_FORM_INCLUDE_TYPE', 'iframe' );	// iframe or inline
