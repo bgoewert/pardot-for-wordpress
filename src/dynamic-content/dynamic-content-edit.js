@@ -46,7 +46,7 @@ class DynamicContentEdit extends Component {
 
         })
 
-        xhr.open('POST', ajaxurl)
+        xhr.open('POST', Pardot.ajaxurl)
         let formData = new FormData();
         formData.append("action", "get_pardot_dynamicContent_shortcode_select_html");
         xhr.send(formData);
