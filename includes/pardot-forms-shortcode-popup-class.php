@@ -28,7 +28,6 @@ class _Pardot_Forms_Shortcode_Popup {
 	 * @since 1.4.4
 	 */
 	public function load_css() {
-		wp_enqueue_style( 'pardot-chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.min.css' );
 		wp_enqueue_style( 'pardot-popup', plugins_url( 'css/popup.css', PARDOT_PLUGIN_FILE ), array( 'pardot-chosen' ) );
 	}
 
@@ -38,8 +37,7 @@ class _Pardot_Forms_Shortcode_Popup {
 	 * @since 1.4.4
 	 */
 	public function load_js() {
-		wp_enqueue_script( 'pardot-chosen-js', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.jquery.min.js', array( 'jquery' ) );
-		wp_enqueue_script( 'pardot-popup-js', plugins_url( 'js/popup.js', PARDOT_PLUGIN_FILE ), array( 'pardot-chosen-js', 'jquery' ) );
+		wp_enqueue_script( 'pardot-popup-js', plugins_url( 'js/popup.js', PARDOT_PLUGIN_FILE ), array( 'jquery' ) );
 		wp_localize_script( 'pardot-popup-js', 'PardotShortcodePopup', array(
 			'ajaxurl'            => admin_url( 'admin-ajax.php' ),
 			'tinymce_button_url' => plugins_url( 'images/pardot-button.png', PARDOT_PLUGIN_FILE )
@@ -80,7 +78,7 @@ class _Pardot_Forms_Shortcode_Popup {
 					<div class="cancel-button">
 						<input type="button" id="close" name="close" value={$close} onclick="self.parent.tb_remove()">
 					</div>
-				</div> 
+				</div>
 HTML;
 			$html .= ob_get_clean();
 		}

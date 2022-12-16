@@ -48,14 +48,18 @@ if ( ! defined( 'PARDOT_JS_CACHE_TIMEOUT' ) ) {
 	define( 'PARDOT_JS_CACHE_TIMEOUT', MONTH_IN_SECONDS );
 }
 
-// require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-class.php' );
-require_once PARDOT_PLUGIN_DIR . '/includes/class-pardot-api.php';
+
 require_once PARDOT_PLUGIN_DIR . '/includes/class-pardot.php';
+require_once PARDOT_PLUGIN_DIR . '/includes/class-pardot-api.php';
+require_once PARDOT_PLUGIN_DIR . '/includes/class-pardot-setting.php';
+require_once PARDOT_PLUGIN_DIR . '/includes/class-pardot-settings.php';
+
+// require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-functions.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-shortcode-popup-class.php' );
 // require( PARDOT_PLUGIN_DIR . '/includes/pardot-plugin-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-crypto.php');
-require( PARDOT_PLUGIN_DIR . '/includes/pardot-settings-class.php' );
+// require( PARDOT_PLUGIN_DIR . '/includes/pardot-settings-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-widget-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-template-tags.php' );
 

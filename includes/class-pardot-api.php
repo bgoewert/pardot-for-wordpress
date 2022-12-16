@@ -19,35 +19,40 @@
  * - Requires WordPress API because of its use of `wp_remote_request()`, `wp_remote_retrieve_response_code()` and
  * `wp_remote_retrieve_body()` but otherwise independent of WordPress. However, this could be made to be a standalone if these functions
  * replaced with CURL equivalents.
- *
- * @author Mike Schinkel <mike@newclarity.net>
- * @version 1.0.0
- *
- * @author Brennan Goewert <brennan@goewert.me>
- * @version 2.0.0
  */
 class Pardot_API
 {
 
 	/**
-	 *
+	 * Contains the singleton instance of this class.
+	 * @var Pardot_API
 	 */
 	private static $_instance;
 
 	/**
 	 * API Version. Defaults to v5.
 	 * @var int
-	 * @since 2.0.0
 	 * @see https://developer.salesforce.com/docs/marketing/pardot/guide/overview.html#pardot-api-versions
 	 */
-	static int $_api_version = 5;
+	static int $api_version = 5;
 
 	/**
-	 * API path
+	 * Base API path.
 	 * @var string
-	 * @since 2.0.0
 	 */
-	static string $base_path = '/api/';
+	static string $api_path_base = '/api';
+
+	/**
+	 * Defines the API path to forms.
+	 * @var string
+	 */
+	static string $api_path_forms = '/form';
+
+	/**
+	 * Defines the API path to dynamic content.
+	 * @var string
+	 */
+	static string $api_path_dynamic_content = '/content';
 
 	/**
 	 * @var string Defines the account type that we are connecting to.
@@ -86,31 +91,64 @@ class Pardot_API
 	 */
 	protected static string $access_token;
 
+	/**
+	 * State of authentication.
+	 * @var bool $is_authenticated
+	 */
+	public static bool $is_authenticated = false;
+
+	/**
+	 * Salesforce login URL used for authentication.
+	 * @var string
+	 */
+	const SALESFORCE_LOGIN_DOMAIN = 'login.salesforce.com';
+
+	/**
+	 * Salesforce sandbox URL used for authentication and the API.
+	 * @var string
+	 */
+	const SALESFORCE_SANDBOX_DOMAIN = 'test.salesforce.com';
+
+	/**
+	 * Pardot API URL
+	 * @var string
+	 */
+	const PARDOT_DOMAIN = 'pi.pardot.com';
+
+	/**
+	 * Pardot Demo URL
+	 * @var string
+	 */
+	const PARDOT_DEMO_DOMAIN = 'pi.demo.pardot.com';
+
+	/**
+	 * OAuth path that is used for retrieving the authorization token.
+	 * @var string
+	 */
+	const SALESFORCE_AUTHORIZE_PATH = '/services/oauth2/authorize';
 
 	/**
 	 * Constructor class for `Pardot_API`.
-	 * @param array $auth_keys Array of auth key(s) for authentication.
+	 * @param string $client_id The consumer_key given by Salesforce.
+	 * @param string
 	 */
-	public function authorize( string $client_id, string $business_unit_id, string $response_type = 'code' )
+	public function authorize( string $client_id, string $redirect_uri, string $response_type = 'code' )
 	{
 
-		$headers = array(
-			'client' => 'Bearer ' . self::$access_token,
-			'Pardot-Business-Unit' => $business_unit_id
+		$params = array(
+			'client_id'     => $client_id,
+			'redirect_uri'  => $redirect_uri,
+			'response_type' => $response_type
 		);
 
+		$url = ( Pardot_Setting::get( 'sandbox' ) ? self::SALESFORCE_SANDBOX_DOMAIN : self::SALESFORCE_LOGIN_DOMAIN ) . self::SALESFORCE_AUTHORIZE_PATH;
 
-		$body = array(
-			'offset' => $offset,
-		);
-
-		wp_remote_get();
+		wp_safe_remote_get( add_query_arg( $params, $url ) );
 
 	}
 
 	/**
 	 * Verify that multiple keys exist.
-	 * @since 2.0.0
 	 */
 	private static function array_keys_exists( array $keys, array $array ) {
 		return ! array_diff_key( array_flip( $keys ), $array);
@@ -118,7 +156,6 @@ class Pardot_API
 
 	/**
 	 * Return an instance of the API.
-	 *
 	 * @return Pardot_API
 	 */
 	public static function get_instance() {
@@ -136,7 +173,7 @@ class Pardot_API
 	 * @since 2.0.0
 	 */
 	static function set_api_version( int $api_version ) {
-		self::$_api_version = $api_version;
+		self::$api_version = $api_version;
 	}
 
 

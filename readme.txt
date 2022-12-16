@@ -163,6 +163,17 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 == Changelog ==
 
+= 2.0.0 =
+
+* Change - WordPress Coding Standards.
+* Change - Refactored jQuery into native JavaScript.
+* Change - Settings class.
+  * Separate JS and CSS into their own files.
+  * Single setting class.
+  * Change some of the static property quasi constants.
+* Change - Pardot API version 5.
+* Remove - Chosen JS library is deprecated. See https://github.com/harvesthq/chosen.
+
 = 1.6.0 =
 
 * Feature - Added support for the WordPress Block Editor

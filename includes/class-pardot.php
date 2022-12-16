@@ -55,6 +55,21 @@ class Pardot
 	public static $saved_transient_keys = '_pardot_transient_keys';
 
 	/**
+	 * Plugin header data.
+	 * @var array
+	 */
+	public static array $plugin_data;
+
+	/**
+	 * Private constructor for this singleton class.
+	 */
+	private function __construct()
+	{
+		if ( ! function_exists( 'get_plugin_data' ) ) require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		self::$plugin_data = get_plugin_data( PARDOT_PLUGIN_FILE );
+	}
+
+	/**
 	 * Return the singleton instance of this class.
 	 *
 	 * To be use in case someone needs to remove one of the actions or shortcodes.
@@ -67,7 +82,7 @@ class Pardot
 	public static function get_instance()
 	{
 		if ( ! isset( self::$_instance ) ) {
-			self::$_instance = new self;
+			self::$_instance = new self();
 		}
 
 		return self::$_instance;

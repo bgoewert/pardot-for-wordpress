@@ -430,7 +430,7 @@ HTML;
 			 * Create the HTML for displaying the select of Pardot forms
 			 */
 			$html = <<<HTML
-<p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}" style="max-width:100%" class="js-chosen">{$options}</select></p>
+<p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}" style="max-width:100%">{$options}</select></p>
 HTML;
 		}
 
@@ -609,8 +609,7 @@ class Pardot_Dynamic_Content_Widget extends WP_Widget
 			$body_html = Pardot::get_dynamic_content_body($instance);
 		}
 
-		wp_register_script('pddc', plugins_url('js/asyncdc.min.js', dirname(__FILE__)), ['jquery'], false, true);
-		wp_enqueue_script('pddc');
+		wp_enqueue_script( 'pddc', plugins_url( 'js/asyncdc.min.js', PARDOT_PLUGIN_FILE ), array( 'jquery' ), Pardot::$plugin_data['Version'], true );
 
 		/**
 		 * After all that if the $body_html is not empty, we can use it as a form.
@@ -796,8 +795,8 @@ HTML;
 			 * Create the HTML for displaying the select of Pardot forms
 			 */
 			$html = <<<HTML
-<p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}" style="max-width:100%" class="js-chosen">{$options}</select></p>
-HTML;
+				<p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}" style="max-width:100%">{$options}</select></p>
+			HTML;
 		}
 
 		if (isset($instance['title'])) {

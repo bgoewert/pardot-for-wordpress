@@ -1,0 +1,24 @@
+header {
+	margin: 1rem 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 2rem;
+}
+
+header nav {
+	display: inline-block;
+}
+
+.success {
+	color: green;
+}
+
+.failure {
+	color: red;
+}
+
+.nav-tab-wrapper>*:not(.nav-tab) {
+	margin: 0 1rem;
+	position: relative;
+	top: 0.5rem;
+}

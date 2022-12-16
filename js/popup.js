@@ -46,7 +46,6 @@
 			},
 			success: function( response ) {
 			 	$( document.getElementById( 'pardot-forms-shortcode-select' ) ).html( response );
-			 	$( document.getElementById( 'formshortcode' ) ).chosen({ width: '100%' });
 		 	}
 		});
 
@@ -64,12 +63,11 @@
 			},
 			success: function( response ) {
 			 	$( document.getElementById( 'pardot-dc-shortcode-select' ) ).html( response );
-			 	$( document.getElementById( 'dcshortcode' ) ).chosen({ width: '100%' });
 			}
 		});
 
 		/**
-		 * Currently-unused function to clear Pardot API cache and get "fresh" data for form's Chosen fields.
+		 * Currently-unused function to clear Pardot API cache and get "fresh" data for form fields.
 		 *
 		 * @since 1.0.0
 		 */
@@ -137,7 +135,7 @@
 				}
 
 				window.send_to_editor( formval );
-				
+
 				$.ajax({
 					type     : 'post',
 					dataType : 'html',
@@ -171,7 +169,7 @@
 				}
 
 				window.send_to_editor( dcval );
-				
+
 				$.ajax({
 					type     : 'post',
 					dataType : 'html',
